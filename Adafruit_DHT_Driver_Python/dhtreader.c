@@ -53,9 +53,11 @@ int readDHT(int type, int pin, float *temp_p, float *hum_p)
 	bcm2835_gpio_fsel(pin, BCM2835_GPIO_FSEL_OUTP);
 
 	bcm2835_gpio_write(pin, HIGH);
-	usleep(500000);  // 500 ms
+	delayMicroseconds(500000);  // 500 ms
 	bcm2835_gpio_write(pin, LOW);
-	usleep(20000);
+	delayMicroseconds(20000);
+	bcm2835_gpio_write(pin, HIGH);
+	delayMicroseconds(40);
 
 	bcm2835_gpio_fsel(pin, BCM2835_GPIO_FSEL_INPT);
 
@@ -63,7 +65,7 @@ int readDHT(int type, int pin, float *temp_p, float *hum_p)
 
 	// wait for pin to drop?
 	while (bcm2835_gpio_lev(pin) == 1) {
-		usleep(1);
+		delayMicroseconds(1);
 	}
 
 	// read data!
